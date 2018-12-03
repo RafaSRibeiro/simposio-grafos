@@ -64,38 +64,42 @@ class GrafoService
         }
 
         $graus = [];
-        foreach ($grafo['vertices'] as $vertice) {
-            $this->cor[$vertice] = 0;
-            $graus[] = [
-                'vertice' => $vertice,
-                'grau' => count($grafo['arestas'][$vertice])
-            ];
-        }
-        $ordenadosEmGraus = SortUtils::array_sort($graus, 'grau', SORT_DESC);
-        $cores = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        $idCor = -1;
-        foreach ($ordenadosEmGraus as $vertice) {
-            if ($this->cor[$vertice['vertice']] == 0) {
-                $idCor++;
-                $this->cor[$vertice['vertice']] = $cores[$idCor];
-                foreach ($this->getNaoAdjacentes($grafo, $vertice['vertice']) as $naoAdjacente) {
-                    if (!$this->possuiAdjacenteMesmaCor($grafo, $naoAdjacente, $cores[$idCor])) {
-                        $this->cor[$naoAdjacente] = $cores[$idCor];
+        if (isset($grafo)) {
+            foreach ($grafo['vertices'] as $vertice) {
+                $this->cor[$vertice] = 0;
+                $graus[] = [
+                    'vertice' => $vertice,
+                    'grau' => count($grafo['arestas'][$vertice])
+                ];
+            }
+            $ordenadosEmGraus = SortUtils::array_sort($graus, 'grau', SORT_DESC);
+            $cores = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            $idCor = -1;
+            foreach ($ordenadosEmGraus as $vertice) {
+                if ($this->cor[$vertice['vertice']] == 0) {
+                    $idCor++;
+                    $this->cor[$vertice['vertice']] = $cores[$idCor];
+                    foreach ($this->getNaoAdjacentes($grafo, $vertice['vertice']) as $naoAdjacente) {
+                        if (!$this->possuiAdjacenteMesmaCor($grafo, $naoAdjacente, $cores[$idCor])) {
+                            $this->cor[$naoAdjacente] = $cores[$idCor];
+                        }
                     }
                 }
             }
-        }
 
-        $result = [];
-        foreach ($grafo['vertices'] as $vertice) {
-            $result[] = [
-                'nome' => $vertice,
-                'cor' => $this->cor[$vertice],
-                'pedido' => $grafo['pedido'][$vertice]
-            ];
-        }
+            $result = [];
+            foreach ($grafo['vertices'] as $vertice) {
+                $result[] = [
+                    'nome' => $vertice,
+                    'cor' => $this->cor[$vertice],
+                    'pedido' => $grafo['pedido'][$vertice]
+                ];
+            }
 
-        return SortUtils::array_sort($result, 'cor', SORT_DESC);
+            return SortUtils::array_sort($result, 'cor', SORT_DESC);
+        } else {
+            return null;
+        }
     }
 
     private function possuiAdjacenteMesmaCor($grafo, $vertice, $corAtual): bool {

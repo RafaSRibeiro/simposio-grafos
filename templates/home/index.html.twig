@@ -63,8 +63,9 @@
     <div class="pedidos">
         <h2>Pedidos Prontos</h2>
         <ul>
-            {% for vertice in vertices %}
-                <li class="cor-{{vertice.cor}}">Vertice: <code>{{ vertice.nome }}</code> Cor: <code>{{ vertice.cor }}</code></li>
+            {% for vertice in prontos %}
+                <li class="cor-{{vertice.cor}}">Vertice: <code>{{ vertice.nome }}</code> Cor: <code>{{ vertice.cor }}</code> {{ vertice.pedido.tipo }} - {{ vertice.pedido.regiao
+                    }}</li>
             {% endfor %}
         </ul>
     </div>
@@ -72,8 +73,9 @@
     <div class="pedidos">
         <h2>Em Elaboração</h2>
         <ul>
-            {% for vertice in vertices %}
-                <li class="cor-{{vertice.cor}}">Vertice: <code>{{ vertice.nome }}</code> Cor: <code>{{ vertice.cor }}</code></li>
+            {% for vertice in elaboracao %}
+                <li class="cor-{{vertice.cor}}">Vertice: <code>{{ vertice.nome }}</code> Cor: <code>{{ vertice.cor }}</code> {{ vertice.pedido.tipo }} - {{ vertice.pedido.regiao
+                    }}</li>
             {% endfor %}
         </ul>
     </div>

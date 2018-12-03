@@ -17,7 +17,7 @@ class HomeController extends AbstractController
             ->findByStatusPedido('pronto');
 
         $pedidosElaboracao = $em->getRepository('App:Pedido')
-            ->findByStatusPedido('pronto');
+            ->findByStatusPedido('em elaboração');
 
         return $this->render('home/index.html.twig', [
             'prontos' => $grafoService->welshPowell($pedidosProntos),
