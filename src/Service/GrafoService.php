@@ -69,7 +69,7 @@ class GrafoService
                 $this->cor[$vertice] = 0;
                 $graus[] = [
                     'vertice' => $vertice,
-                    'grau' => count($grafo['arestas'][$vertice])
+                    'grau' => key_exists('arestas', $grafo) ? count($grafo['arestas'][$vertice]) : 0
                 ];
             }
             $ordenadosEmGraus = SortUtils::array_sort($graus, 'grau', SORT_DESC);
@@ -103,15 +103,17 @@ class GrafoService
     }
 
     private function possuiAdjacenteMesmaCor($grafo, $vertice, $corAtual): bool {
-        foreach ($grafo['arestas'][$vertice] as $verticeAdjacente) {
-            if ($this->cor[$verticeAdjacente] == $corAtual)
-                return true;
+        if (key_exists('arestas', $grafo)) {
+            foreach ($grafo['arestas'][$vertice] as $verticeAdjacente) {
+                if ($this->cor[$verticeAdjacente] == $corAtual)
+                    return true;
+            }
         }
         return false;
     }
 
     private function getNaoAdjacentes($grafo, $vertice) {
-        $naoAdjacentes = $grafo['arestas'][$vertice];
+        $naoAdjacentes = key_exists('arestas', $grafo) ? $grafo['arestas'][$vertice] : [];
         return array_diff($grafo['vertices'], $naoAdjacentes);
     }
 
