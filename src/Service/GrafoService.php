@@ -54,18 +54,17 @@ class GrafoService
 
         foreach ($pedidos as $pedido) {
             $grafo['vertices'][] = $pedido->getDestino();
-            $grafo['arestas'][] = $pedido->getDestino();
         }
+
 
         foreach ($pedidos as $pedidoPrincipal) {
             foreach ($pedidos as $pedido) {
                 if ($pedido->getDestino() != $pedidoPrincipal->getDestino()) {
-                    if (!($pedidoPrincipal->getTipo() == $pedido->getTipo() || $pedidoPrincipal->getRegiao() == $pedido->getRegiao()))
-                        $grafo['arestas'][$pedidoPrincipal] = $pedido->getDestino();
+                    if ($pedidoPrincipal->getTipo() != $pedido->getTipo() || $pedidoPrincipal->getRegiao() != $pedido->getRegiao())
+                        $grafo['arestas'][$pedidoPrincipal->getDestino()][] = $pedido->getDestino();
                 }
             }
         }
-
         $this->grafo = $grafo;
     }
 

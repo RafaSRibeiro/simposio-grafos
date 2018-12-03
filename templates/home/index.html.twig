@@ -11,6 +11,7 @@
 <div class="example-wrapper">
     <h1></h1>
     <ul>
+        {{ dump(vertices) }}
         {% for vertice in vertices %}
         <li>Vertice: <code>{{ vertice.nome }}</code> Cor: <code>{{  vertice.cor }}</code></li>
         {% endfor %}
