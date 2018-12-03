@@ -9,18 +9,12 @@
 namespace App\Service;
 
 use App\Utils\SortUtils;
-use Doctrine\ORM\EntityManagerInterface;
 
 class GrafoService
 {
-    private $grafo;
-
     private $cor = [];
 
-    private $em;
-
-    public function __construct(EntityManagerInterface $em) {
-        $this->em = $em;
+    public function __construct() {
 //        $grafo['vertices'] = [1, 2, 3, 4, 5, 6, 7, 8];
 //        $grafo['arestas'][1] = [5, 6, 7, 8];
 //        $grafo['arestas'][2] = [5, 6, 7, 8];
@@ -49,12 +43,14 @@ class GrafoService
 //        $grafo['arestas']['H'] = ['E'];
 //        $this->grafo = $grafo;
 
-        $pedidos = $this->em->getRepository('App:Pedido')
-            ->findByStatusPedido('pronto');
+    }
+
+
+    public function welshPowell($pedidos) {
 
         foreach ($pedidos as $pedido) {
             $grafo['vertices'][] = $pedido->getDestino();
-//            $grafo['vertices'][$pedido->getDestino()]['pedido'] = $pedido;
+            $grafo['pedido'][$pedido->getDestino()] = $pedido;
         }
 
 
@@ -66,12 +62,6 @@ class GrafoService
                 }
             }
         }
-        $this->grafo = $grafo;
-    }
-
-
-    public function welshPowell() {
-        $grafo = $this->grafo;
 
         $graus = [];
         foreach ($grafo['vertices'] as $vertice) {
@@ -88,8 +78,8 @@ class GrafoService
             if ($this->cor[$vertice['vertice']] == 0) {
                 $idCor++;
                 $this->cor[$vertice['vertice']] = $cores[$idCor];
-                foreach ($this->getNaoAdjacentes($vertice['vertice']) as $naoAdjacente) {
-                    if (!$this->possuiAdjacenteMesmaCor($naoAdjacente, $cores[$idCor])) {
+                foreach ($this->getNaoAdjacentes($grafo, $vertice['vertice']) as $naoAdjacente) {
+                    if (!$this->possuiAdjacenteMesmaCor($grafo, $naoAdjacente, $cores[$idCor])) {
                         $this->cor[$naoAdjacente] = $cores[$idCor];
                     }
                 }
@@ -100,15 +90,15 @@ class GrafoService
         foreach ($grafo['vertices'] as $vertice) {
             $result[] = [
                 'nome' => $vertice,
-                'cor' => $this->cor[$vertice]
+                'cor' => $this->cor[$vertice],
+                'pedido' => $grafo['pedido'][$vertice]
             ];
         }
 
         return SortUtils::array_sort($result, 'cor', SORT_DESC);
     }
 
-    private function possuiAdjacenteMesmaCor($vertice, $corAtual): bool {
-        $grafo = $this->grafo;
+    private function possuiAdjacenteMesmaCor($grafo, $vertice, $corAtual): bool {
         foreach ($grafo['arestas'][$vertice] as $verticeAdjacente) {
             if ($this->cor[$verticeAdjacente] == $corAtual)
                 return true;
@@ -116,8 +106,7 @@ class GrafoService
         return false;
     }
 
-    private function getNaoAdjacentes($vertice) {
-        $grafo = $this->grafo;
+    private function getNaoAdjacentes($grafo, $vertice) {
         $naoAdjacentes = $grafo['arestas'][$vertice];
         return array_diff($grafo['vertices'], $naoAdjacentes);
     }

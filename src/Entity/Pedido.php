@@ -37,7 +37,7 @@ class Pedido
     private $data;
 
     /**
-     * @ORM\Column(type="string", length=50, columnDefinition="VARCHAR(50) CHECK (status_pedido IN ('pronto', 'cancelado', 'em elaboração'))")
+     * @ORM\Column(type="string", length=50, columnDefinition="VARCHAR(50) CHECK (status_pedido IN ('pronto', 'cancelado', 'em elaboração', 'entrega'))")
      */
     private $statusPedido;
 
