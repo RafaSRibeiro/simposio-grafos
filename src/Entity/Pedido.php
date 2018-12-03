@@ -36,6 +36,11 @@ class Pedido
      */
     private $data;
 
+    /**
+     * @ORM\Column(type="string", length=50, columnDefinition="VARCHAR(50) CHECK (status_pedido IN ('pronto', 'cancelado', 'em elaboração'))")
+     */
+    private $statusPedido;
+
     public function getId(): ?int {
         return $this->id;
     }
@@ -74,6 +79,14 @@ class Pedido
 
     public function setData($data): void {
         $this->data = $data;
+    }
+
+    public function getStatusPedido(): ?string {
+        return $this->statusPedido;
+    }
+
+    public function setStatusPedido($statusPedido): void {
+        $this->statusPedido = $statusPedido;
     }
 
 

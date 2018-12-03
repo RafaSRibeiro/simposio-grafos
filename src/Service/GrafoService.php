@@ -50,10 +50,11 @@ class GrafoService
 //        $this->grafo = $grafo;
 
         $pedidos = $this->em->getRepository('App:Pedido')
-            ->findAll();
+            ->findByStatusPedido('pronto');
 
         foreach ($pedidos as $pedido) {
             $grafo['vertices'][] = $pedido->getDestino();
+//            $grafo['vertices'][$pedido->getDestino()]['pedido'] = $pedido;
         }
 
 
@@ -102,7 +103,8 @@ class GrafoService
                 'cor' => $this->cor[$vertice]
             ];
         }
-        return $result;
+
+        return SortUtils::array_sort($result, 'cor', SORT_DESC);
     }
 
     private function possuiAdjacenteMesmaCor($vertice, $corAtual): bool {
