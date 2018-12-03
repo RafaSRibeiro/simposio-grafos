@@ -6,17 +6,21 @@
  * Time: 12:36
  */
 
-namespace App;
+namespace App\Service;
 
 use App\Utils\SortUtils;
+use Doctrine\ORM\EntityManagerInterface;
 
 class GrafoService
 {
     private $grafo;
 
-    private $cor  = [];
+    private $cor = [];
 
-    public function __construct() {
+    private $em;
+
+    public function __construct(EntityManagerInterface $em) {
+        $this->em = $em;
 //        $grafo['vertices'] = [1, 2, 3, 4, 5, 6, 7, 8];
 //        $grafo['arestas'][1] = [5, 6, 7, 8];
 //        $grafo['arestas'][2] = [5, 6, 7, 8];
@@ -34,15 +38,34 @@ class GrafoService
 //        $grafo['arestas']['D'] = ['B', 'C', 'E'];
 //        $grafo['arestas']['E'] = ['A', 'B', 'D'];
 
-        $grafo['vertices'] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-        $grafo['arestas']['A'] = ['B'];
-        $grafo['arestas']['B'] = ['A', 'C', 'G'];
-        $grafo['arestas']['C'] = ['B', 'D'];
-        $grafo['arestas']['D'] = ['C', 'E'];
-        $grafo['arestas']['E'] = ['D', 'H', 'F'];
-        $grafo['arestas']['F'] = ['E', 'G'];
-        $grafo['arestas']['G'] = ['B', 'F'];
-        $grafo['arestas']['H'] = ['E'];
+//        $grafo['vertices'] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+//        $grafo['arestas']['A'] = ['B'];
+//        $grafo['arestas']['B'] = ['A', 'C', 'G'];
+//        $grafo['arestas']['C'] = ['B', 'D'];
+//        $grafo['arestas']['D'] = ['C', 'E'];
+//        $grafo['arestas']['E'] = ['D', 'H', 'F'];
+//        $grafo['arestas']['F'] = ['E', 'G'];
+//        $grafo['arestas']['G'] = ['B', 'F'];
+//        $grafo['arestas']['H'] = ['E'];
+//        $this->grafo = $grafo;
+
+        $pedidos = $this->em->getRepository('App:Pedido')
+            ->findAll();
+
+        foreach ($pedidos as $pedido) {
+            $grafo['vertices'][] = $pedido->getDestino();
+            $grafo['arestas'][] = $pedido->getDestino();
+        }
+
+        foreach ($pedidos as $pedidoPrincipal) {
+            foreach ($pedidos as $pedido) {
+                if ($pedido->getDestino() != $pedidoPrincipal->getDestino()) {
+                    if (!($pedidoPrincipal->getTipo() == $pedido->getTipo() || $pedidoPrincipal->getRegiao() == $pedido->getRegiao()))
+                        $grafo['arestas'][$pedidoPrincipal] = $pedido->getDestino();
+                }
+            }
+        }
+
         $this->grafo = $grafo;
     }
 
@@ -59,7 +82,7 @@ class GrafoService
             ];
         }
         $ordenadosEmGraus = SortUtils::array_sort($graus, 'grau', SORT_DESC);
-        $cores = [1,2,3,4,5,6,7,8,9,10];
+        $cores = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         $idCor = -1;
         foreach ($ordenadosEmGraus as $vertice) {
             if ($this->cor[$vertice['vertice']] == 0) {

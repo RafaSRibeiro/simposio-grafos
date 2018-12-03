@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\GrafoService;
+use App\Service\GrafoService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
