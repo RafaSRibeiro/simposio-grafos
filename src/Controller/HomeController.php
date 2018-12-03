@@ -12,9 +12,16 @@ class HomeController extends AbstractController
      * @Route("/home", name="home")
      */
     public function index(GrafoService $grafoService) {
-        $vertices = $grafoService->welshPowell();
+        $em = $this->getDoctrine()->getManager();
+        $pedidosProntos = $em->getRepository('App:Pedido')
+            ->findByStatusPedido('pronto');
+
+        $pedidosElaboracao = $em->getRepository('App:Pedido')
+            ->findByStatusPedido('pronto');
+
         return $this->render('home/index.html.twig', [
-            'vertices' => $vertices,
+            'prontos' => $grafoService->welshPowell($pedidosProntos),
+            'elaboracao' => $grafoService->welshPowell($pedidosElaboracao),
         ]);
     }
 }
