@@ -8,7 +8,9 @@
         <h2>Pedidos Prontos</h2>
         <ul>
             {% for vertice in prontos %}
-                <li class="cor-{{vertice.cor}}">Vertice: <code>{{ vertice.nome }}</code> Cor: <code>{{ vertice.cor }}</code> {{ vertice.pedido.tipo }} - {{ vertice.pedido.regiao
+                <li class="cor-{{vertice.pedido.tipo}}-{{vertice.pedido.regiao}}">Vertice: <code>{{ vertice.nome }}</code> Cor: <code>{{ vertice.cor }}</code> {{ vertice.pedido
+                    .tipo }} - {{ vertice
+                    .pedido.regiao
                     }}</li>
             {% endfor %}
         </ul>
@@ -18,7 +20,7 @@
         <h2>Em Elaboração</h2>
         <ul>
             {% for vertice in elaboracao %}
-                <li class="cor-{{vertice.cor}}">Vertice: <code>{{ vertice.nome }}</code> Cor: <code>{{ vertice.cor }}</code> {{ vertice.pedido.tipo }} - {{ vertice.pedido.regiao
+                <li class="cor-{{vertice.pedido.tipo}}-{{vertice.pedido.regiao}}">Vertice: <code>{{ vertice.nome }}</code> Cor: <code>{{ vertice.cor }}</code> {{ vertice.pedido.tipo }} - {{ vertice.pedido.regiao
                     }}</li>
             {% endfor %}
         </ul>

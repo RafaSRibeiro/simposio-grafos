@@ -2,28 +2,28 @@
     padding: 0;
     margin: 0;
 }
-.cor-1 {
+.cor-frio-sul {
     background-color: #5eb5e0;
 }
-.cor-2 {
+.cor-frio-norte {
     background-color: #718C00;
 }
-.cor-3 {
+.cor-frio-leste {
     background-color: #8959A8;
 }
-.cor-4 {
+.cor-frio-oeste {
     background-color: #916319;
 }
-.cor-5 {
+.cor-quente-sul {
     background-color: #868686;
 }
-.cor-6 {
+.cor-quente-norte {
     background-color: #AA3333;
 }
-.cor-7 {
+.cor-quente-leste {
     background-color: #ffcc00;
 }
-.cor-8 {
+.cor-quente-oeste {
     background-color: #D3D3D3;
 }
 .cor-9 {
